@@ -27,7 +27,7 @@ jobs:
       # GHCR exige un nom de repo en minuscules
       - name: Set lowercase owner
         id: owner_lc
-        run: echo "owner_lc=$(echo \"${GITHUB_REPOSITORY_OWNER}\" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+        run: echo "owner_lc=$(echo ${GITHUB_REPOSITORY_OWNER} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
 
       # Buildx pour le build multi-arch si besoin
       - name: Set up Docker Buildx
