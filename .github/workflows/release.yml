@@ -18,6 +18,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Rend le wrapper Gradle exécutable (évite les erreurs de permission)
+      - name: Make Gradle wrapper executable
+        working-directory: back
+        run: |
+          chmod +x ./gradlew
+          sed -i 's/\r$//' ./gradlew
+
       # JDK 17 pour build back
       - name: Set up JDK 17
         uses: actions/setup-java@v4
