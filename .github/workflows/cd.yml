@@ -9,8 +9,6 @@ on:
 env:
   # Registry GitHub Container Registry
   REGISTRY: ghcr.io
-  IMAGE_BACK: ${{ github.repository_owner }}/orion-microcrm-back
-  IMAGE_FRONT: ${{ github.repository_owner }}/orion-microcrm-front
 
 jobs:
   publish-images:
@@ -25,6 +23,11 @@ jobs:
       # Récupère le code
       - name: Checkout
         uses: actions/checkout@v4
+
+      # GHCR exige un nom de repo en minuscules
+      - name: Set lowercase owner
+        id: owner_lc
+        run: echo "owner_lc=$(echo \"${GITHUB_REPOSITORY_OWNER}\" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
 
       # Buildx pour le build multi-arch si besoin
       - name: Set up Docker Buildx
@@ -47,8 +50,8 @@ jobs:
           target: back
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_BACK }}:${{ github.ref_name }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_BACK }}:latest
+            ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-back:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-back:latest
 
       # Build & push image front
       - name: Build & Push Front image
@@ -59,5 +62,5 @@ jobs:
           target: front
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT }}:${{ github.ref_name }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_FRONT }}:latest
+            ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-front:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-front:latest
