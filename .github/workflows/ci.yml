@@ -1,6 +1,6 @@
 name: CI
-
 on:
+  # CI sur push/PR + manuel
   push:
     branches: ["main", "ci-cd-setup"]
   pull_request:
@@ -15,12 +15,15 @@ jobs:
       run:
         working-directory: back
     steps:
+      # Récupère le code
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Rend le wrapper Gradle exécutable
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
+      # JDK 17 + cache Gradle
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -28,6 +31,7 @@ jobs:
           java-version: "17"
           cache: gradle
 
+      # Build + tests
       - name: Build & Test
         run: ./gradlew build
 
@@ -38,9 +42,11 @@ jobs:
       run:
         working-directory: front
     steps:
+      # Récupère le code
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Node 20 + cache npm
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -48,12 +54,15 @@ jobs:
           cache: npm
           cache-dependency-path: front/package-lock.json
 
+      # Installation propre
       - name: Install dependencies
         run: npm ci
 
+      # Build front
       - name: Build
         run: npm run build
 
+      # Tests front en mode CI
       - name: Test (CI)
         run: npm test -- --watch=false --browsers=ChromeHeadless
 
@@ -67,9 +76,11 @@ jobs:
       SONAR_PROJECT_KEY_BACK: ${{ secrets.SONAR_PROJECT_KEY_BACK }}
       SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
     steps:
+      # Récupère le code
       - name: Checkout
         uses: actions/checkout@v4
 
+      # JDK 17 + cache Gradle
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -77,10 +88,12 @@ jobs:
           java-version: "17"
           cache: gradle
 
+      # Build sans tests pour générer les classes
       - name: Build (classes for analysis)
         working-directory: back
         run: ./gradlew build -x test
 
+      # Analyse SonarCloud back
       - name: SonarCloud Scan (Back)
         uses: SonarSource/sonarcloud-github-action@v2
         with:
@@ -103,9 +116,11 @@ jobs:
       SONAR_PROJECT_KEY_FRONT: ${{ secrets.SONAR_PROJECT_KEY_FRONT }}
       SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
     steps:
+      # Récupère le code
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Node 20 + cache npm
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -113,10 +128,12 @@ jobs:
           cache: npm
           cache-dependency-path: front/package-lock.json
 
+      # Installation front
       - name: Install dependencies
         working-directory: front
         run: npm ci
 
+      # Analyse SonarCloud front
       - name: SonarCloud Scan (Front)
         uses: SonarSource/sonarcloud-github-action@v2
         with:

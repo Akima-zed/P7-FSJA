@@ -1,20 +1,27 @@
+# Stage 1: build du front Angular avec une image Node légère
 FROM node:20-alpine as front-build
 
 COPY ./front /src
 
 WORKDIR /src
 
+# Install propre des dépendances + build Angular
 RUN npm ci \
     && npm run build
 
+# Stage 2: build du back Spring Boot via Gradle
 FROM gradle:jdk17 as back-build
 
 COPY ./back /src
 
 WORKDIR /src
 
-RUN ./gradlew build
+# Corrige les fins de ligne Windows, rend le wrapper exécutable, build sans tests
+RUN sed -i 's/\r$//' ./gradlew \
+    && chmod +x ./gradlew \
+    && ./gradlew build -x test
 
+# Stage 3: runtime front (Caddy sert les fichiers statiques)
 FROM alpine:3.19 as front
 
 COPY --from=front-build /src/dist/microcrm/browser /app/front
@@ -29,6 +36,7 @@ EXPOSE 443
 
 CMD ["/usr/sbin/caddy", "run"]
 
+# Stage 4: runtime back (JRE + JAR)
 FROM alpine:3.19 as back
 
 COPY --from=back-build /src/build/libs/microcrm-0.0.1-SNAPSHOT.jar /app/back/microcrm-0.0.1-SNAPSHOT.jar
@@ -41,6 +49,7 @@ EXPOSE 8080
 
 CMD ["java", "-jar", "/app/back/microcrm-0.0.1-SNAPSHOT.jar"]
 
+# Stage 5: image tout-en-un (front + back + supervisor)
 FROM alpine:3.19 as standalone
 
 COPY --from=front / /

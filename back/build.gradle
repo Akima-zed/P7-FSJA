@@ -1,31 +1,42 @@
 plugins {
+	// Plugins Gradle essentiels + Spring Boot
 	id 'java'
 	id 'org.springframework.boot' version '3.2.5'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id 'com.adarshr.test-logger' version '4.0.0'
 }
 
+// Identité du projet
 group = 'com.openclassroom.devops.orion'
 version = '0.0.1-SNAPSHOT'
 
 java {
+	// Version Java cible
 	sourceCompatibility = '17'
 }
 
 repositories {
+	// Dépôt Maven principal
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// Back-end Spring Boot
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	// Fixtures de données
 	implementation 'ro.polak:spring-boot-data-fixtures:0.2.0'
+	// Logs JSON vers Logstash
+	implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+	// Tests
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// Base de données embarquée
 	runtimeOnly 'org.hsqldb:hsqldb'
+	// Lanceur JUnit
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
+	// Active JUnit 5
     useJUnitPlatform()
 }

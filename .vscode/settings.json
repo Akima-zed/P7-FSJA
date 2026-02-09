@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "Caddyfile": "plaintext",
+    "logstash.conf": "plaintext",
+    "supervisor.ini": "ini"
+  }
+}

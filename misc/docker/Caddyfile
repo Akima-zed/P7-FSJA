@@ -1,6 +1,11 @@
+# Caddy : servir le front Angular en SPA
 * {
+	# Racine des fichiers statiques
 	root * /app/front
+	# Compression des réponses
 	encode gzip
+	# Fallback SPA vers index.html
 	try_files {path} /index.html
+	# Serveur de fichiers statiques
 	file_server
 }

@@ -1,18 +1,26 @@
 services:
   back:
+    # Build du backend depuis le Dockerfile (stage back)
     build:
       context: .
       dockerfile: Dockerfile
       target: back
+    environment:
+      # Envoi des logs vers Logstash (ELK sur un autre compose -> accès via host)
+      - LOGSTASH_HOST=host.docker.internal
+      - LOGSTASH_PORT=5044
     ports:
+      # API Spring Boot
       - "8080:8080"
 
   front:
+    # Build du frontend depuis le Dockerfile (stage front)
     build:
       context: .
       dockerfile: Dockerfile
       target: front
     ports:
+      # HTTP/HTTPS pour Caddy
       - "80:80"
       - "443:443"
     depends_on:
