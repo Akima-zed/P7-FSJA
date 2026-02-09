@@ -223,7 +223,7 @@ Pour activer l’analyse SonarCloud, ajouter ces secrets dans GitHub :
 
 ### Déclenchement
 
-- CI : push et pull request sur `main` et `ci-cd-setup`
+- CI : push et pull request sur `main`
 - CD : tag SemVer `vX.Y.Z` (ex: `v1.2.3`) ou manuel
 - Release : tag SemVer `vX.Y.Z`
 
