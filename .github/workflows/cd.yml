@@ -42,11 +42,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Grant execute permission for Gradle wrapper
-      - name: Accorder les permissions d'exécution au wrapper Gradle
-        run: chmod +x ./back/gradlew
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./gradlew
 
-      # Construire et pousser l'image Docker du backend
-      - name: Construire et Pousser l'image Backend
+      # Build & push image back
+      - name: Build & Push Back image
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -57,8 +57,8 @@ jobs:
             ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-back:${{ github.ref_name }}
             ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-back:latest
 
-      # Construire et pousser l'image Docker du frontend
-      - name: Construire et Pousser l'image Frontend
+      # Build & push image front
+      - name: Build & Push Front image
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -69,8 +69,8 @@ jobs:
             ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-front:${{ github.ref_name }}
             ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-front:latest
 
-      # Ajouter une étape d'analyse SonarCloud
-      - name: Exécuter l'analyse SonarCloud
+      # Add SonarCloud analysis step
+      - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
