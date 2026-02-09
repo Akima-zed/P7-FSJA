@@ -43,7 +43,7 @@ jobs:
 
       # Grant execute permission for Gradle wrapper
       - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
+        run: chmod +x ./back/gradlew
 
       # Build & push image back
       - name: Build & Push Back image
