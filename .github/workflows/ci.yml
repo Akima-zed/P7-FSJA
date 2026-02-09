@@ -21,7 +21,7 @@ jobs:
 
       # Rend le wrapper Gradle exécutable
       - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+        run: chmod +x ./back/gradlew
 
       # JDK 17 + cache Gradle
       - name: Set up JDK 17
@@ -33,7 +33,7 @@ jobs:
 
       # Build + tests
       - name: Build & Test
-        run: ./gradlew build
+        run: ./back/gradlew build
 
   frontend:
     name: Build & Test (Front)
@@ -73,7 +73,7 @@ jobs:
     continue-on-error: true
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SONAR_PROJECT_KEY_BACK: ${{ secrets.SONAR_PROJECT_KEY_BACK }}
+      SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
       SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
     steps:
       # Récupère le code
@@ -99,7 +99,7 @@ jobs:
         with:
           projectBaseDir: back
           args: >
-            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY_BACK }}
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
             -Dsonar.sources=src/main/java
             -Dsonar.java.binaries=build/classes/java/main
@@ -113,7 +113,7 @@ jobs:
     continue-on-error: true
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SONAR_PROJECT_KEY_FRONT: ${{ secrets.SONAR_PROJECT_KEY_FRONT }}
+      SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
       SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
     steps:
       # Récupère le code
@@ -139,7 +139,7 @@ jobs:
         with:
           projectBaseDir: front
           args: >
-            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY_FRONT }}
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
             -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
             -Dsonar.sources=src
         env:
