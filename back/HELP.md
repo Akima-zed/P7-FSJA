@@ -1,5 +1,7 @@
 # Read Me First
 
+> Note: fichier généré par Spring Initializr, conservé comme aide-mémoire.
+
 # Getting Started
 
 ### Reference Documentation
