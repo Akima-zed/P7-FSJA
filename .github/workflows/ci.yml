@@ -91,6 +91,13 @@ jobs:
           java-version: "17"
           cache: gradle
 
+      # Ensure Gradle wrapper is executable
+      - name: Make Gradle wrapper executable
+        working-directory: back
+        run: |
+          chmod +x ./gradlew
+          sed -i 's/\r$//' ./gradlew
+
       # Build sans tests pour générer les classes
       - name: Build (classes for analysis)
         working-directory: back
