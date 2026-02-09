@@ -2,6 +2,13 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
 
+## Table of contents
+- [Development server](#development-server)
+- [Build](#build)
+- [Running unit tests](#running-unit-tests)
+- [API configuration](#api-configuration)
+- [Further help](#further-help)
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
@@ -17,6 +24,11 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## API configuration
+
+Le front appelle l’API sur `http://localhost:8080`.
+Configuration : [front/src/app/config.ts](front/src/app/config.ts)
 
 ## Running end-to-end tests
 
