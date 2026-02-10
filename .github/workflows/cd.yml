@@ -42,10 +42,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Grant execute permission for Gradle wrapper
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x ./gradlew
-
       # Build & push image back
       - name: Build & Push Back image
         uses: docker/build-push-action@v6
@@ -69,11 +65,3 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-front:${{ github.ref_name }}
             ${{ env.REGISTRY }}/${{ steps.owner_lc.outputs.owner_lc }}/orion-microcrm-front:latest
-
-      # Add SonarCloud analysis step
-      - name: Run SonarCloud analysis
-        uses: SonarSource/sonarcloud-github-action@v2
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
