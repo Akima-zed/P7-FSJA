@@ -2,9 +2,9 @@ name: CI
 on:
   # CI sur push/PR + manuel
   push:
-    branches: ["main", "ci-cd-setup"]
+    branches: ["main", "ci-cd-setup", "v1.0.3-branch"]
   pull_request:
-    branches: ["main", "ci-cd-setup"]
+    branches: ["main", "ci-cd-setup", "v1.0.3-branch"]
   workflow_dispatch:
 
 jobs:
@@ -21,7 +21,10 @@ jobs:
 
       # Rend le wrapper Gradle exécutable
       - name: Make Gradle wrapper executable
-        run: chmod +x ./back/gradlew
+        working-directory: back
+        run: |
+          chmod +x ./gradlew
+          sed -i 's/\r$//' ./gradlew
 
       # JDK 17 + cache Gradle
       - name: Set up JDK 17
@@ -87,6 +90,13 @@ jobs:
           distribution: temurin
           java-version: "17"
           cache: gradle
+
+      # Ensure Gradle wrapper is executable
+      - name: Make Gradle wrapper executable
+        working-directory: back
+        run: |
+          chmod +x ./gradlew
+          sed -i 's/\r$//' ./gradlew
 
       # Build sans tests pour générer les classes
       - name: Build (classes for analysis)
