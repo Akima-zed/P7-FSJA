@@ -218,8 +218,7 @@ Pour activer l’analyse SonarCloud, ajouter ces secrets dans GitHub :
 
 - `SONAR_TOKEN`
 - `SONAR_ORGANIZATION`
-- `SONAR_PROJECT_KEY_BACK`
-- `SONAR_PROJECT_KEY_FRONT`
+- `SONAR_PROJECT_KEY`
 
 ### Déclenchement
 

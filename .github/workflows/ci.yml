@@ -2,11 +2,11 @@ name: CI
 on:
   # CI sur push/PR + manuel
   push:
-    branches: ["main", "ci-cd-setup", "v1.0.3-branch"]
+    branches: "main"
     tags:
       - "v*.*.*"
   pull_request:
-    branches: ["main", "ci-cd-setup", "v1.0.3-branch"]
+    branches: "main"
   workflow_dispatch:
 
 jobs:

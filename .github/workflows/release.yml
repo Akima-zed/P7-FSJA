@@ -2,7 +2,7 @@ name: Release
 on:
   # Release automatique sur tag SemVer
   push:
-    branches: ["main", "v1.0.3-branch"]
+    branches: "main"
     tags:
       - "v*.*.*"
 
