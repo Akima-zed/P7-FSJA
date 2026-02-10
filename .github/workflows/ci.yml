@@ -25,7 +25,6 @@ jobs:
       - name: Make Gradle wrapper executable
         working-directory: back
         run: chmod +x ./gradlew
-         
 
       # JDK 17 + cache Gradle
       - name: Set up JDK 17
