@@ -24,9 +24,8 @@ jobs:
       # Rend le wrapper Gradle exécutable
       - name: Make Gradle wrapper executable
         working-directory: back
-        run: |
-          chmod +x ./gradlew
-          sed -i 's/\r$//' ./gradlew
+        run: chmod +x ./gradlew
+         
 
       # JDK 17 + cache Gradle
       - name: Set up JDK 17
