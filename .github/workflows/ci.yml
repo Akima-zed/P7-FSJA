@@ -3,6 +3,8 @@ on:
   # CI sur push/PR + manuel
   push:
     branches: ["main", "ci-cd-setup", "v1.0.3-branch"]
+    tags:
+      - "v*.*.*"
   pull_request:
     branches: ["main", "ci-cd-setup", "v1.0.3-branch"]
   workflow_dispatch:
