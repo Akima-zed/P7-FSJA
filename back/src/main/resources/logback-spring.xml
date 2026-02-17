@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+  <!-- Définition des propriétés Spring pour récupérer les variables d'environnement LOGSTASH_HOST et LOGSTASH_PORT -->
   <springProperty scope="context" name="LOGSTASH_HOST" source="LOGSTASH_HOST" defaultValue="localhost" />
   <springProperty scope="context" name="LOGSTASH_PORT" source="LOGSTASH_PORT" defaultValue="5044" />
 
+  <!-- Appender pour afficher les logs dans la console -->
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
+      <!-- Format des logs affichés dans la console -->
       <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
 
+  <!-- Appender pour envoyer les logs à Logstash via TCP -->
   <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <!-- Adresse et port de Logstash, récupérés des propriétés définies plus haut -->
     <destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
+    <!-- Encodeur pour formater les logs au format JSON compatible avec Logstash -->
     <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
   </appender>
 
+  <!-- Configuration du niveau de log et des appenders utilisés -->
   <root level="INFO">
+    <!-- Envoi des logs à la console -->
     <appender-ref ref="CONSOLE" />
+    <!-- Envoi des logs à Logstash -->
     <appender-ref ref="LOGSTASH" />
   </root>
 </configuration>

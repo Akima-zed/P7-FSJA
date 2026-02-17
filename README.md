@@ -4,254 +4,161 @@
 
 # MicroCRM (P7 - Développeur Full-Stack - Java et Angular - Mettez en œuvre l'intégration et le déploiement continu d'une application Full-Stack)
 
-MicroCRM est une application de démonstration basique ayant pour être objectif de servir de socle pour le module "P7 - Développeur Full-Stack".
+MicroCRM est une application de démonstration basique ayant pour objectif de servir de socle pour le module "P7 - Développeur Full-Stack". L'application est conçue pour illustrer la mise en œuvre d'une chaîne CI/CD complète, la conteneurisation et le déploiement d'une architecture Full-Stack Spring Boot / Angular.
 
-L'application MicroCRM est une implémentation simplifiée d'un ["CRM" (Customer Relationship Management)](https://fr.wikipedia.org/wiki/Gestion_de_la_relation_client). Les fonctionnalités sont limitées à la création, édition et la visualisations des individus liés à des organisations.
+## Prérequis
 
-![Page d'accueil](./misc/screenshots/screenshot_1.png)
-![Édition de la fiche d'un individu](./misc/screenshots/screenshot_2.png)
-
-## Sommaire
-- [Code source](#code-source)
-   - [Organisation](#organisation)
-   - [Démarrer avec les sources](#démarrer-avec-les-sources)
-   - [Exécution des tests](#exécution-des-tests)
-   - [Images Docker](#images-docker)
-   - [Docker Compose (recommandé)](#docker-compose-recommandé)
-- [CI/CD (GitHub Actions)](#cicd-github-actions)
-- [Documentation de la mission](#documentation-de-la-mission)
-
-## Code source
-
-### Organisation
-
-Ce [monorepo](https://en.wikipedia.org/wiki/Monorepo) contient les 2 composantes du projet "MicroCRM":
-
-- La partie serveur (ou "backend"), en Java SpringBoot 3;
-- La partie cliente (ou "frontend"), en Angular 17.
-
-### Démarrer avec les sources
-
-#### Serveur
-
-##### Dépendances
+### Outils nécessaires
 
 - [OpenJDK >= 17](https://openjdk.org/)
+- [NPM >= 10.2.4](https://www.npmjs.com/)
+- [Docker >= 20.x](https://www.docker.com/)
+- [Docker Compose >= 2.x](https://docs.docker.com/compose/)
 
-##### Procédure
+## Instructions d'installation
 
-1. Se positionner dans le répertoire `back` avec une invite de commande:
+### Cloner le dépôt
 
-   ```shell
+```bash
+git clone <url-du-repo>
+cd <nom-du-repo>
+```
+
+### Backend
+
+1. Se positionner dans le répertoire `back` :
+   ```bash
    cd back
    ```
-
-2. Construire le JAR:
-
-   ```shell
-   # Sur Linux
+2. Construire le JAR :
+   ```bash
    ./gradlew build
-
-   # Sur Windows
-   gradlew.bat build
    ```
-
-3. Démarrer le service:
-
-   ```shell
+3. Démarrer le service :
+   ```bash
    java -jar build/libs/microcrm-0.0.1-SNAPSHOT.jar
    ```
+   L'API sera disponible sur `http://localhost:8080`.
 
-Puis ouvrir l'URL http://localhost:8080 dans votre navigateur.
+### Frontend
 
-#### Client
-
-##### Dépendances
-
-- [NPM >= 10.2.4](https://www.npmjs.com/)
-
-##### Procédure
-
-1. Se positionner dans le répertoire `front` avec une invite de commande:
-
-   ```shell
+1. Se positionner dans le répertoire `front` :
+   ```bash
    cd front
    ```
-
-2. (La première fois seulement) Installer les dépendances NodeJS:
-
-   ```shell
+2. Installer les dépendances NodeJS :
+   ```bash
    npm install
    ```
-
-3. Démarrer le service de développement:
-
-   ```shell
-   npx @angular/cli serve
+3. Démarrer le service de développement :
+   ```bash
+   npm start
    ```
+   L'application sera disponible sur `http://localhost:4200`.
 
-Puis ouvrir l'URL http://localhost:4200 dans votre navigateur.
+## Instructions d'exécution
 
-### Exécution des tests
-
-#### Client
-
-**Dépendances**
-
-- Google Chrome ou Chromium
-
-Dans votre terminal:
-
-```shell
-cd front
-CHROME_BIN=</path/to/google/chrome> npm test
-```
-
-#### Serveur
-
-Dans votre terminal:
-
-```shell
-cd back
-./gradlew test
-```
-
-### Images Docker
-
-#### Client
-
-##### Construire l'image
-
-```shell
-docker build --target front -t orion-microcrm-front:latest .
-```
-
-##### Exécuter l'image
-
-```shell
-docker run -it --rm -p 80:80 -p 443:443 orion-microcrm-front:latest
-```
-
-L'application sera disponible sur https://localhost.
-
-#### Serveur
-
-##### Construire l'image
-
-```shell
-docker build --target back -t orion-microcrm-back:latest .
-```
-
-##### Exécuter l'image
-
-```shell
-docker run -it --rm -p 8080:8080 orion-microcrm-back:latest
-```
-
-L'API sera disponible sur http://localhost:8080.
-
-#### Tout en un
-
-```shell
-docker build --target standalone -t orion-microcrm-standalone:latest .
-```
-
-##### Exécuter l'image
-
-```shell
-docker run -it --rm -p 8080:8080 -p 80:80 -p 443:443 orion-microcrm-standalone:latest
-```
-
-L'application sera disponible sur https://localhost et l'API sur http://localhost:8080.
-
-### Docker Compose (recommandé)
+### Avec Docker Compose
 
 Pour lancer **front + back** ensemble :
 
-```shell
+```bash
 docker compose up --build
 ```
 
 Arrêt :
 
-```shell
+```bash
 docker compose down
 ```
 
 ### Démo locale (ELK + App)
 
-Ordre recommandé :
+1. Lancer la stack ELK :
+   ```bash
+   docker compose -f docker-compose-elk.yml up -d
+   ```
+2. Lancer l'application :
+   ```bash
+   docker compose up -d --build
+   ```
+3. Accès :
+   - Kibana : `http://localhost:5601` (créer le data view `microcrm-*` si besoin)
+   - Front : `https://localhost` (accepter le certificat auto-signé)
+   - Back : `http://localhost:8080`
 
-1) ELK
+## Explication des choix techniques
 
-```shell
-docker compose -f docker-compose-elk.yml up -d
-```
+### Pourquoi ces technologies ?
 
-2) App
+- **Caddy** : Simplicité et gestion automatique de HTTPS.
+- **ELK** : Centralisation et visualisation des logs.
+- **Docker** : Isolation et reproductibilité des environnements.
 
-```shell
-docker compose up -d --build
-```
+### Structure du projet
 
-3) Accès
-- Kibana : http://localhost:5601 (créer le data view `microcrm-*` si besoin)
-- Front : https://localhost (accepter le certificat auto‑signé)
-- Back : http://localhost:8080
+- `back/` : Contient le backend Spring Boot.
+- `front/` : Contient le frontend Angular.
+- `misc/` : Contient les configurations Docker et ELK.
 
-## CI/CD (GitHub Actions)
+## CI/CD
 
 ### Workflows
 
-_CI trigger: 2026-02-06 (run #3)_
-
-- **CI** : build + tests front/back + analyse SonarCloud
-   - Fichier : `.github/workflows/ci.yml`
-- **CD** : build & push des images Docker sur GHCR
-   - Fichier : `.github/workflows/cd.yml`
-- **Release (optionnel)** : création de release GitHub + artefacts
-   - Fichier : `.github/workflows/release.yml`
-
-### Secrets requis (SonarCloud)
-
-Pour activer l’analyse SonarCloud, ajouter ces secrets dans GitHub :
-
-- `SONAR_TOKEN`
-- `SONAR_ORGANIZATION`
-- `SONAR_PROJECT_KEY`
+- **CI** : Build + tests front/back + analyse SonarCloud.
+  - Fichier : `.github/workflows/ci.yml`
+- **CD** : Build & push des images Docker sur GHCR.
+  - Fichier : `.github/workflows/cd.yml`
+- **Release (optionnel)** : Création de release GitHub + artefacts.
+  - Fichier : `.github/workflows/release.yml`
 
 ### Déclenchement
 
-- CI : push et pull request sur `main`
-- CD : tag SemVer `vX.Y.Z` (ex: `v1.2.3`) ou manuel
-- Release : tag SemVer `vX.Y.Z`
+- CI : Push et pull request sur `main`.
+- CD : Tag SemVer `vX.Y.Z` (ex: `v1.2.3`) ou manuel.
+- Release : Tag SemVer `vX.Y.Z`.
 
-## Documentation de la mission
+## Tests
 
-Les livrables de documentation sont dans le dossier `livrable/` :
+### Backend
 
-### Partie 1
-- Étapes CI/CD :
-   - [livrable/Documentation CI-CD — Partie 1/Étapes de mise en œuvre CI-CD/etape3-ci.md](livrable/Documentation%20CI-CD%20—%20Partie%201/Étapes%20de%20mise%20en%20œuvre%20CI-CD/etape3-ci.md)
-   - [livrable/Documentation CI-CD — Partie 1/Étapes de mise en œuvre CI-CD/etape5-cd.md](livrable/Documentation%20CI-CD%20—%20Partie%201/Étapes%20de%20mise%20en%20œuvre%20CI-CD/etape5-cd.md)
-- Plan conteneurisation/déploiement :
-   - [livrable/Documentation CI-CD — Partie 1/Plan de conteneurisation-déploiement/etape4-conteneurisation.md](livrable/Documentation%20CI-CD%20—%20Partie%201/Plan%20de%20conteneurisation-déploiement/etape4-conteneurisation.md)
-- Plan de testing périodique :
-   - [livrable/Documentation CI-CD — Partie 1/Plan de testing périodique/etape2-plans.md](livrable/Documentation%20CI-CD%20—%20Partie%201/Plan%20de%20testing%20périodique/etape2-plans.md)
+Exécuter les tests :
 
-### Partie 2
-- KPI + métriques + analyse :
-   - [livrable/Documentation CI-CD — Partie 2/KPI proposés + métriques + analyse/partie2-etape2-dora-kpi.md](livrable/Documentation%20CI-CD%20—%20Partie%202/KPI%20propos%C3%A9s%20+%20m%C3%A9triques%20+%20analyse/partie2-etape2-dora-kpi.md)
-- Plan de sécurité :
-   - [livrable/Documentation CI-CD — Partie 2/Plan de sécurité/partie2-etape3-securite-sonar.md](livrable/Documentation%20CI-CD%20—%20Partie%202/Plan%20de%20s%C3%A9curit%C3%A9/partie2-etape3-securite-sonar.md)
-- Plan de sauvegarde :
-   - [livrable/Documentation CI-CD — Partie 2/Plan de sauvegarde des données/partie2-etape4-plans.md](livrable/Documentation%20CI-CD%20—%20Partie%202/Plan%20de%20sauvegarde%20des%20donn%C3%A9es/partie2-etape4-plans.md)
-- Plan des mises à jour :
-   - [livrable/Documentation CI-CD — Partie 2/Plan des mises à jour/partie2-etape4-plans.md](livrable/Documentation%20CI-CD%20—%20Partie%202/Plan%20des%20mises%20%C3%A0%20jour/partie2-etape4-plans.md)
+```bash
+cd back
+./gradlew test
+```
 
-### Annexes
-- Monitoring ELK : [livrable/partie2-etape1-elk.md](livrable/partie2-etape1-elk.md)
-- Documentation finale : [livrable/partie2-etape5-doc-finale.md](livrable/partie2-etape5-doc-finale.md)
-- Auto-évaluation : [livrable/partie2-etape6-auto-evaluation.md](livrable/partie2-etape6-auto-evaluation.md)
+### Frontend
 
-> Exigence livrables : indiquer “Option B” dans le titre du projet.
+Exécuter les tests :
+
+```bash
+cd front
+npm test
+```
+
+## Sauvegarde et mises à jour
+
+### Sauvegarde
+
+- **Données Elasticsearch** : Utiliser l'outil Snapshot and Restore pour sauvegarder les index.
+- **Fichiers critiques** : Sauvegarder les fichiers `docker-compose.yml`, `logstash.conf`, et les sources du projet.
+
+### Mises à jour
+
+- **Dépendances** :
+  - Backend :
+    ```bash
+    ./gradlew dependencyUpdates
+    ```
+  - Frontend :
+    ```bash
+    npm outdated
+    npm update
+    ```
+- **Images Docker** :
+  ```bash
+  docker compose pull
+  docker compose up -d
+  ```
