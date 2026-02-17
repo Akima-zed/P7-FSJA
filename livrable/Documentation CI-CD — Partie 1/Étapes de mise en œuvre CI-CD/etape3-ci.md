@@ -56,14 +56,6 @@ Fichier : `.github/workflows/ci.yml`
   - `SONAR_ORGANIZATION`
   - `SONAR_PROJECT_KEY_FRONT`
 
----
-
-## Checklist Étape 3
-- [x] Build back automatisé
-- [x] Tests back automatisés
-- [x] Build front automatisé
-- [x] Tests front automatisés
-- [x] Analyse SonarCloud prévue et conditionnelle
 
 ---
 

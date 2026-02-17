@@ -45,8 +45,3 @@ Décrire comment déployer l’application de manière cohérente avec la conten
 4. Déploiement progressif (validation en environnement de test).
 
 ---
-
-## Checklist
-- [x] Plan de déploiement défini
-- [x] Plan de sauvegarde défini
-- [x] Plan de mise à jour défini

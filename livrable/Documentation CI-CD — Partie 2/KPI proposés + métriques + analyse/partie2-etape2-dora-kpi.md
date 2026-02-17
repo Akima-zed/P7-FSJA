@@ -58,8 +58,3 @@ Mesurer la performance du pipeline et définir des KPI opérationnels.
 - **À compléter** : code smells (SonarQube) si nouvelles mesures.
 
 ---
-
-## Checklist
-- [x] DORA définies
-- [x] KPI listés
-- [x] tableau prêt à compléter

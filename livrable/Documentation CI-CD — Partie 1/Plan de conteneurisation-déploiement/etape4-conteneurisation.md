@@ -47,8 +47,3 @@ docker compose down
 ```
 
 ---
-
-## Checklist Étape 4
-- [x] Dockerfiles vérifiés et adaptés
-- [x] docker-compose.yml créé
-- [x] Ports cohérents (front 80/443, back 8080)

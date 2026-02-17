@@ -75,8 +75,3 @@ Analyser les résultats SonarQube et finaliser le plan de sécurité.
 - **Pic INFO** : 3 événements à **11:26:20** (arrêt propre du pool DB) → lié à des logs d’infrastructure (Hikari). Pas d’issue Sonar critique associée.
 
 ---
-
-## Checklist
-- [x] Analyse structurée SonarQube
-- [x] Plan de sécurité mis à jour
-- [x] Actions d’amélioration listées

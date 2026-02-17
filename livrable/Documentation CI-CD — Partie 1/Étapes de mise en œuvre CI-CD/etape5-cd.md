@@ -30,9 +30,3 @@ Fichier : `.github/workflows/cd.yml`
 - Aucun secret en clair dans le repo
 
 ---
-
-## Checklist Étape 5
-- [x] Workflow CD créé
-- [x] Déclenchement par tag SemVer
-- [x] Publication d’images Docker automatisée
-- [x] Sécurité respectée (secrets GitHub)
